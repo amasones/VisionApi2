@@ -1,6 +1,7 @@
 # github https://github.com/amasones/ProyectoVision
 import tkinter as tk
 from tkinter import messagebox
+import sys
 from tkinter import ttk
 from tkinter import filedialog
 from PIL import ImageTk
@@ -10,12 +11,6 @@ from google.cloud import vision
 from google.cloud.vision import types
 from Funciones.reconocimiento_rostros import ventana_reconocer, Ventana_Recon
 
-
-# from Funciones.Profesor import *
-def datos_reconocer_ventana():
-    f = open('holamundo.txt', 'w')
-    f.write(str(""))
-    f.close()
 class Menu_principal():
     def __init__(self, raiz):
         # Interfaz grafica
@@ -27,7 +22,7 @@ class Menu_principal():
         self.titulo.grid(column=0, row=0, columnspan=2)
 
         self.boton_reconocimiento = tk.Button(raiz, text='Reconocimiento de rostros', height=2, width=30,
-                                              command=datos_reconocer_ventana).grid(column=0, row=1,
+                                              command=self.hola).grid(column=0, row=1,
                                                                                          pady=5, padx=5,
                                                                                          columnspan=2)
         self.boton_etiquetado = tk.Button(raiz, text='Etiquetado de personas', height=2, width=30).grid(column=0, row=2,
@@ -46,25 +41,12 @@ class Menu_principal():
                                                                                                padx=5,
                                                                                                columnspan=1)
         self.boton_cargar = tk.Button(raiz, text='Cargar registro', height=2, width=12).grid(column=1, row=5, pady=5,
-                                                                                             padx=5,
-                                                                                             columnspan=1)
-
-
-    def BOX(self):
-        MsgBox = tk.messagebox.askquestion('Exit Application', 'Are you sure you want to exit the application',
-                                           icon='warning')
-        if MsgBox == 'yes':
-            self.raiz.destroy()
-        else:
-            tk.messagebox.showinfo('Return', 'You will now return to the application screen')
-
+                                                                                             padx=5)
+    def hola(self):
+        ventana_reconocer()
 
 
 
 raiz = tk.Tk()
 menu = Menu_principal(raiz)
 raiz.mainloop()
-
-
-
-

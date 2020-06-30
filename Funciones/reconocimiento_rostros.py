@@ -1,6 +1,6 @@
 import datetime
 from tkinter import *
-
+import os
 from Funciones.Profesor import *
 
 
@@ -25,8 +25,7 @@ class Ventana_Recon:
                                                                                                   pady=5, padx=5)
 
         # Guarda los datos en una lista
-        self.boton3 = Button(self.ven, text="Guardar registros", command=self.ven.destroy).grid(column=0, row=5,
-                                                                                                pady=5, padx=5)
+        self.boton3 = Button(self.ven, text="Guardar registros", command=self.guardar_resultados).grid(column=0, row=5)
 
     def escribir_imagen(self):
         self.entrada.set(seleccionar_imagen())
@@ -35,14 +34,20 @@ class Ventana_Recon:
         self.entrada2.set(reconocer_caras(self.entrada.get()))
 
     def guardar_resultados(self):
+        # Acomoda la informacion
         self.tiempo = datetime.datetime.today()
         self.direccion = self.entrada.get()
         self.datos = self.entrada2.get()
-        return [self.tiempo.strftime("%d/%m/%Y"), self.direccion, self.datos]
+        self.info = [self.tiempo.strftime("%d/%m/%Y"), self.direccion, self.datos]
+        # Guarda la info en un archivo
+        self.ruta = os.getcwd()
+        self.f = open(self.ruta + '\datos\datos.txt', 'w')
+        self.f.write(str(self.info))
+        self.f.close()
+        self.ven.destroy()
 
 
 def ventana_reconocer():
-    root = Tk()
+    root = Toplevel()
     v_reconocer = Ventana_Recon(root)
-    root.mainloop()
-    return (v_reconocer.guardar_resultados())
+    return

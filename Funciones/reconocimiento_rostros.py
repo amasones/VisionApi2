@@ -38,16 +38,19 @@ class Ventana_Recon:
         self.tiempo = datetime.datetime.today()
         self.direccion = self.entrada.get()
         self.datos = self.entrada2.get()
-        self.info = [self.tiempo.strftime("%d/%m/%Y"), self.direccion, self.datos]
-        # Guarda la info en un archivo
-        self.ruta = os.getcwd()
-        self.f = open(self.ruta + '\datos\datos.txt', 'w')
-        self.f.write(str(self.info))
-        self.f.close()
+        info = [self.tiempo.strftime("%d/%m/%Y"), self.direccion, self.datos]
         self.ven.destroy()
+
+        # Guarda la info en un archivo
+
+        archi=open("temporal.dat","w")
+        archi.write(str(info))
+        archi.close()
+        return
 
 
 def ventana_reconocer():
     root = Toplevel()
     v_reconocer = Ventana_Recon(root)
-    return
+
+

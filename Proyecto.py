@@ -51,8 +51,19 @@ class Menu_principal():
         self.save.mensaje_guardar = messagebox.askyesno(message="¿Desea guardar los regsitros actuales?",
                                                         title="Guardar")
         if self.save.mensaje_guardar == True:
-            self.archi = open("registros.dat", "w")
-            self.archi.write(str(lista))
+            # Lista de la clase personas
+            self.archi = open("personas.dat", "w")
+            self.archi.write(str(lista_personas))
+            self.archi.close()
+
+            # Lista de la clase rostros
+            self.archi = open("rostros.dat", "w")
+            self.archi.write(str(lista_rostros))
+            self.archi.close()
+
+            # Lista de la clase reconocimiento
+            self.archi = open("reconocimiento.dat", "w")
+            self.archi.write(str(lista_reconocimiento))
             self.archi.close()
             self.save.destroy()
         else:
@@ -62,7 +73,40 @@ class Menu_principal():
         ventana_reconocer()
 
 
+class Personas():
+    def __init__(self, nombre, NO, NE, SE, SO):
+        self.nombre = nombre
+        self.norOeste = NO
+        self.norEste = NE
+        self.surEste = SE
+        self.surOeste = SO
+
+
+class Rostros():
+    def __init__(self, nombre, felicidad, tristeza, enojo, sorpresa, borroso, gorra, NO, NE, SE, SO):
+        self.nombre = nombre
+        self.norOeste = NO
+        self.norEste = NE
+        self.surEste = SE
+        self.surOeste = SO
+        self.felicidad = felicidad
+        self.tristeza = tristeza
+        self.enojo = enojo
+        self.sorpresa = sorpresa
+        self.borroso = borroso
+        self.gorra = gorra
+
+
+class Reconocimiento():
+    def __init__(self, fecha, ruta, listado_rostros):
+        self.fecha = fecha
+        self.ruta = ruta
+        self.listado_rostro = listado_rostros
+
+
 raiz = tk.Tk()
 menu = Menu_principal(raiz)
-lista = ["prueba", 1, 2, 3]
+lista_personas = []
+lista_rostros = []
+lista_reconocimiento = []
 raiz.mainloop()

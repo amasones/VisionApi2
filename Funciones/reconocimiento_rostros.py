@@ -1,6 +1,5 @@
 import datetime
-from tkinter import *
-import os
+
 from Funciones.Profesor import *
 
 
@@ -8,7 +7,6 @@ class Ventana_Recon:
     def __init__(self, ven):
         self.ven = ven
         ven.title("Reconocimiento de Rostros")
-        ven.geometry("480x500")
 
         # Define la ruta del archivo
         self.entrada = StringVar()
@@ -43,7 +41,7 @@ class Ventana_Recon:
 
         # Guarda la info en un archivo
 
-        archi=open("temporal.dat","w")
+        archi = open("temporal.dat", "w")
         archi.write(str(info))
         archi.close()
         return
@@ -52,5 +50,3 @@ class Ventana_Recon:
 def ventana_reconocer():
     root = Toplevel()
     v_reconocer = Ventana_Recon(root)
-
-

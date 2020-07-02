@@ -54,7 +54,7 @@ def reconocer_caras(url):
                          )
         faces_list.append(face_dict)
     # retorna lista de objetos con características del reconocimiento facial
-    return (faces_list)
+    return faces_list
 
 
 def seleccionar_imagen():

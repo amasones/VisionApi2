@@ -12,6 +12,7 @@ from google.cloud.vision import types
 from Funciones.reconocimiento_rostros import ventana_reconocer
 from Funciones.etiquetado_personas import ventana_etiquetar
 from Funciones.visualizacion_etiquetas import ventana_visualizacion
+from Funciones.visualizacion_por_persona import ventana_visualizacion_por_persona
 
 
 class Menu_principal():
@@ -41,11 +42,12 @@ class Menu_principal():
                                                                                                  columnspan=2)
         self.boton_visulizacion = tk.Button(raiz, text='Visualización de etiquetas', height=2, width=30,
                                             command=lambda: ventana_visualizacion(lista_rostros)).grid(column=0,
-                                                                                                   row=3,
-                                                                                                   pady=5,
-                                                                                                   padx=5,
-                                                                                                   columnspan=2)
+                                                                                                       row=3,
+                                                                                                       pady=5,
+                                                                                                       padx=5,
+                                                                                                       columnspan=2)
         self.boton_visulizacionXpersona = tk.Button(raiz, text='Visualización de imágenes por personas', height=2,
+                                                    command=lambda: ventana_visualizacion_por_persona(lista_rostros),
                                                     width=30).grid(
             column=0, row=4, pady=5, padx=5, columnspan=2)
         self.boton_guardar = tk.Button(raiz, text='Guardar registro', height=2, width=12,

@@ -1,12 +1,13 @@
 from tkinter import *
 from tkinter import ttk, filedialog
+
 from PIL import ImageTk, Image
 
 
 class Ventana_Visualizacion:
     def __init__(self, ven, lista):
         self.root = ven
-        ven.title("Reconocimiento de Rostros")
+        ven.title("Visualización de etiquetas")
 
         # Lista donde se almacena el nombre, emociones y vertices de la persona
         self.lista_R = lista
@@ -59,7 +60,7 @@ class Ventana_Visualizacion:
         img.pack(side=LEFT)
         self.texto_feliz = StringVar()
         self.texto_feliz.set("Felicidad:")
-        self.label_feliz = Entry(self.root, textvariable=self.texto_feliz,state="disabled").pack(side=LEFT)
+        self.label_feliz = Entry(self.root, textvariable=self.texto_feliz, state="disabled").pack(side=LEFT)
 
         img = Label(self.root)
         img.image = ImageTk.PhotoImage(file="imagenes/triste.png")
@@ -67,7 +68,7 @@ class Ventana_Visualizacion:
         img.pack(side=LEFT)
         self.texto_triste = StringVar()
         self.texto_triste.set("Tristeza:")
-        self.label_triste = Entry(self.root, textvariable=self.texto_triste,state="disabled").pack(side=LEFT)
+        self.label_triste = Entry(self.root, textvariable=self.texto_triste, state="disabled").pack(side=LEFT)
 
         img = Label(self.root)
         img.image = ImageTk.PhotoImage(file="imagenes/enojo-grrr.png")
@@ -75,7 +76,7 @@ class Ventana_Visualizacion:
         img.pack(side=LEFT)
         self.texto_enojo = StringVar()
         self.texto_enojo.set("Enojo:")
-        self.label_enojo = Entry(self.root, textvariable=self.texto_enojo,state="disabled").pack(side=LEFT)
+        self.label_enojo = Entry(self.root, textvariable=self.texto_enojo, state="disabled").pack(side=LEFT)
 
         img = Label(self.root)
         img.image = ImageTk.PhotoImage(file="imagenes/sorprendido.png")
@@ -83,7 +84,7 @@ class Ventana_Visualizacion:
         img.pack(side=LEFT)
         self.texto_sorpresa = StringVar()
         self.texto_sorpresa.set("Sorpresa:")
-        self.label_sorpresa = Entry(self.root, textvariable=self.texto_sorpresa,state="disabled").pack(side=LEFT)
+        self.label_sorpresa = Entry(self.root, textvariable=self.texto_sorpresa, state="disabled").pack(side=LEFT)
 
         img = Label(self.root)
         img.image = ImageTk.PhotoImage(file="imagenes/brillo.png")
@@ -91,7 +92,7 @@ class Ventana_Visualizacion:
         img.pack(side=LEFT)
         self.texto_brillo = StringVar()
         self.texto_brillo.set("Sobre exposicion:")
-        self.label_brillo = Entry(self.root, textvariable=self.texto_brillo,state="disabled").pack(side=LEFT)
+        self.label_brillo = Entry(self.root, textvariable=self.texto_brillo, state="disabled").pack(side=LEFT)
 
         img = Label(self.root)
         img.image = ImageTk.PhotoImage(file="imagenes/neblina.png")
@@ -99,7 +100,7 @@ class Ventana_Visualizacion:
         img.pack(side=LEFT)
         self.texto_nebli = StringVar()
         self.texto_nebli.set("Borrosidad:")
-        self.label_nebli = Entry(self.root, textvariable=self.texto_nebli,state="disabled").pack(side=LEFT)
+        self.label_nebli = Entry(self.root, textvariable=self.texto_nebli, state="disabled").pack(side=LEFT)
 
         img = Label(self.root)
         img.image = ImageTk.PhotoImage(file="imagenes/gorra.png")
@@ -107,7 +108,7 @@ class Ventana_Visualizacion:
         img.pack(side=LEFT)
         self.texto_gorra = StringVar()
         self.texto_gorra.set("Gorra/Sombrero:")
-        self.label_gorra = Entry(self.root, textvariable=self.texto_gorra,state="disabled").pack(side=LEFT)
+        self.label_gorra = Entry(self.root, textvariable=self.texto_gorra, state="disabled").pack(side=LEFT)
 
     # hace muchas cosas, es mejor leer lo de abajo
     # borra ciertos elementos para que no se dupliquen cada vez que se efectua la accion
@@ -139,13 +140,13 @@ class Ventana_Visualizacion:
         self.nombre = self.canvas.create_window(promedio,
                                                 self.lista_con_misma_direccion[self.posicion_lista][10].get("y"),
                                                 window=widget)
-        self.texto_feliz.set("Felicidad:"+self.lista_con_misma_direccion[self.posicion_lista][1])
-        self.texto_triste.set("Tristeza:"+self.lista_con_misma_direccion[self.posicion_lista][2])
-        self.texto_enojo.set("Enojo:"+self.lista_con_misma_direccion[self.posicion_lista][3])
-        self.texto_sorpresa.set("Sorpresa:"+self.lista_con_misma_direccion[self.posicion_lista][4])
-        self.texto_brillo.set("Sobre exposicion:"+self.lista_con_misma_direccion[self.posicion_lista][5])
-        self.texto_nebli.set("Borrosidad:"+self.lista_con_misma_direccion[self.posicion_lista][6])
-        self.texto_gorra.set("Gorra/Sombrero:"+self.lista_con_misma_direccion[self.posicion_lista][7])
+        self.texto_feliz.set("Felicidad:" + self.lista_con_misma_direccion[self.posicion_lista][1])
+        self.texto_triste.set("Tristeza:" + self.lista_con_misma_direccion[self.posicion_lista][2])
+        self.texto_enojo.set("Enojo:" + self.lista_con_misma_direccion[self.posicion_lista][3])
+        self.texto_sorpresa.set("Sorpresa:" + self.lista_con_misma_direccion[self.posicion_lista][4])
+        self.texto_brillo.set("Sobre exposicion:" + self.lista_con_misma_direccion[self.posicion_lista][5])
+        self.texto_nebli.set("Borrosidad:" + self.lista_con_misma_direccion[self.posicion_lista][6])
+        self.texto_gorra.set("Gorra/Sombrero:" + self.lista_con_misma_direccion[self.posicion_lista][7])
 
 
 def ventana_visualizacion(lista_rostros):

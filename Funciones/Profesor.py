@@ -22,7 +22,7 @@ def reconocer_caras(url):
     faces = response.face_annotations
 
     # Names of likelihood from google.cloud.vision.enums
-    likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE', 'LIKELY', 'VERY_LIKELY')
+    likelihood_name = ('0%', '1%', '25%', '50%', '75%', '100%')
 
     # lista simplificada de rostros con datos simplificados
     faces_list = []

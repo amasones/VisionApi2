@@ -1,4 +1,4 @@
-# github https://github.com/amasones/ProyectoVision
+# github https://github.com/amasones/VisionApi2
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox

@@ -25,9 +25,11 @@ class Ventana_Recon:
         # Guarda los datos en una lista
         self.boton3 = Button(self.ven, text="Guardar registros", command=self.guardar_resultados).grid(column=0, row=5)
 
+    # Escribe la ruta
     def escribir_imagen(self):
         self.entrada.set(seleccionar_imagen())
 
+    # Agarra informacion
     def procesar_imagen(self):
         self.entrada2.set(reconocer_caras(self.entrada.get()))
 
@@ -41,7 +43,7 @@ class Ventana_Recon:
 
         # Guarda la info en un archivo
 
-        archi = open("temporal.dat", "w")
+        archi = open("datos/temporal.dat", "w")
         archi.write(str(info))
         archi.close()
         return

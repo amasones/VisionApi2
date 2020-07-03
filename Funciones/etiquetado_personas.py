@@ -1,7 +1,6 @@
-import datetime
 from tkinter import *
 from tkinter import ttk, filedialog
-import os
+
 from PIL import ImageTk, Image
 
 
@@ -13,31 +12,88 @@ class Ventana_Etiquetar:
         self.lista_R = lista
         self.filename = filedialog.askopenfile(initialdir="/", title="Select file",
                                                filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
-        # Scrollbars para poder ver imagene smuy grandes
+        # Scrollbars para poder ver imagenes muy grandes
+
         scrollbary = Scrollbar(self.root)
         scrollbary.pack(side=RIGHT, fill=Y)
         scrollbarx = Scrollbar(self.root, orient=HORIZONTAL)
         scrollbarx.pack(side=BOTTOM, fill=X)
-        self.canvas = Canvas(self.root, width=800, height=600, bg='white', xscrollcommand=scrollbarx.set,
+        self.canvas = Canvas(self.root, width=700, height=500, bg='white', xscrollcommand=scrollbarx.set,
                              yscrollcommand=scrollbary.set)
         self.canvas.pack(expand=YES, fill=BOTH)
         scrollbary.config(command=self.canvas.yview)
         scrollbarx.config(command=self.canvas.xview)
 
-        # Crea una lista para almacenar todos los rostros con la misma direccion de la imagen
-        lista_con_misma_direccion = []
-        for x in self.lista_R:
-            if x[12] == self.filename.name:
-                lista_con_misma_direccion.append(x)
-            else:
-                pass
-
-        
+        # Muestra la imagen en la ventana, se usa global para que python pueda reconocerla, ya que hay un error interno
+        # que toma la imagen como basura y la borra al instante
         global img
         img = ImageTk.PhotoImage(Image.open(self.filename.name))
         self.canvas.create_image(0, 0, anchor="nw", image=img)
 
-        self.canvas.create_rectangle(200, 132, 516, 606, width=5, fill='red', stipple="gray12")
+        # Crea una lista para almacenar todos los rostros con la misma direccion de la imagen
+        self.lista_con_misma_direccion = []
+        for x in self.lista_R:
+            if x[12] == self.filename.name:
+                self.lista_con_misma_direccion.append(list(x))
+            else:
+                pass
+        # Botones y labels usados para mostrar informacion
+        self.nombre = Label(self.root, text='Nombre', height=2, width=10).pack(side=LEFT)
+        self.entrada_nombre = StringVar()
+        self.campo_nombre = Entry(self.root, textvariable=self.entrada_nombre, width=50).pack(side=LEFT)
+        self.boton_aceptar = Button(self.root, text="Guardar nombre", command=self.guardar_nombre).pack(side=LEFT)
+        self.boton_guardar_resultados = Button(self.root, text="Guardar registro",
+                                               command=self.guardar_resultados).pack(side=RIGHT, padx=10)
+
+        # Crea una lista de todas las personas presentes para poder seleccionarlas en el combo box dependiendo de su
+        # posicion en la lista
+        self.cantidad_personas = []
+        for x in range(len(self.lista_con_misma_direccion)):
+            self.cantidad_personas.append(x + 1)
+        print(self.cantidad_personas)
+
+        # Combobox para eligir personas con un bind para que ejecute mostrar_datos
+        self.opciones_personas = ttk.Combobox(self.root, value=self.cantidad_personas, state="readonly")
+        self.opciones_personas.current(0)
+        self.opciones_personas.bind("<<ComboboxSelected>>", self.mostrar_datos)
+        self.opciones_personas.pack(side=RIGHT, padx=20)
+
+    # retorna un archivo para usarlo en el menu principal para recargar los datos de las clases
+    def guardar_resultados(self):
+        archi = open("datos/temporal2.dat", "w")
+        archi.write(str(self.lista_con_misma_direccion))
+        archi.close()
+        self.root.destroy()
+        return
+
+    # Guarda el nuevo nombre escrito por el usuario remplazando el anterior
+    def guardar_nombre(self):
+        nombre = self.entrada_nombre.get()
+        self.lista_con_misma_direccion[self.posicion_lista][0] = nombre
+        print(self.lista_con_misma_direccion[self.posicion_lista])
+        print(self.lista_con_misma_direccion[self.posicion_lista][0])
+
+    # Dependiendo del numero elegido en el combobox consulta la lista y muestra los datos, cada vez que se inicia esta
+    # funcion se elimina self.rectangulo para que el recuadro anterior no se mantenga y solo este el actualmente
+    # seleccionado
+    def mostrar_datos(self, event):
+        try:
+            self.canvas.delete(self.rectangulo)
+        except:
+            pass
+        self.posicion_lista = self.opciones_personas.get()
+        self.posicion_lista = int(self.posicion_lista) - 1
+
+        # Crea rectangulos agarrando x,y de una esquina a otras x,y de la esquina opuesta (de forma diagonal) para
+        # dibujar un rectangulo
+        self.entrada_nombre.set(self.lista_con_misma_direccion[self.posicion_lista][0])
+        print(self.lista_con_misma_direccion[self.posicion_lista][8].get("x"),
+              self.lista_con_misma_direccion[self.posicion_lista][8].get("y"))
+        self.rectangulo = self.canvas.create_rectangle(self.lista_con_misma_direccion[self.posicion_lista][8].get("x"),
+                                                       self.lista_con_misma_direccion[self.posicion_lista][8].get("y"),
+                                                       self.lista_con_misma_direccion[self.posicion_lista][9].get("x"),
+                                                       self.lista_con_misma_direccion[self.posicion_lista][9].get("y"),
+                                                       fill='red', stipple="gray12")
 
 
 def ventana_etiquetar(lista_rostros):

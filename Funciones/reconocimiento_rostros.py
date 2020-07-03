@@ -17,7 +17,7 @@ class Ventana_Recon:
         # Define los datos para enviar a la lista
         self.entrada2 = StringVar()
         self.entrada2.set("")
-        self.campo2 = Entry(ven, state="disabled", textvariable=self.entrada2, width=50).grid(column=0, row=4, pady=5,
+        self.campo2 = Entry(self.ven, state="disabled", textvariable=self.entrada2, width=50).grid(column=0, row=4, pady=5,
                                                                                               padx=5)
         self.boton2 = Button(self.ven, text="Procesar imagen", command=self.procesar_imagen).grid(column=0, row=2,
                                                                                                   pady=5, padx=5)

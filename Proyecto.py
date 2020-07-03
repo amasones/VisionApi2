@@ -11,6 +11,7 @@ from google.cloud import vision
 from google.cloud.vision import types
 from Funciones.reconocimiento_rostros import ventana_reconocer
 from Funciones.etiquetado_personas import ventana_etiquetar
+from Funciones.visualizacion_etiquetas import ventana_visualizacion
 
 
 class Menu_principal():
@@ -38,11 +39,12 @@ class Menu_principal():
                                                                                                  pady=5,
                                                                                                  padx=5,
                                                                                                  columnspan=2)
-        self.boton_visulizacion = tk.Button(raiz, text='Visualización de etiquetas', height=2, width=30).grid(column=0,
-                                                                                                              row=3,
-                                                                                                              pady=5,
-                                                                                                              padx=5,
-                                                                                                              columnspan=2)
+        self.boton_visulizacion = tk.Button(raiz, text='Visualización de etiquetas', height=2, width=30,
+                                            command=lambda: ventana_visualizacion(lista_rostros)).grid(column=0,
+                                                                                                   row=3,
+                                                                                                   pady=5,
+                                                                                                   padx=5,
+                                                                                                   columnspan=2)
         self.boton_visulizacionXpersona = tk.Button(raiz, text='Visualización de imágenes por personas', height=2,
                                                     width=30).grid(
             column=0, row=4, pady=5, padx=5, columnspan=2)
@@ -130,8 +132,8 @@ class Menu_principal():
                 lista = self.archi.read()
                 lista = eval(lista)
                 for x in lista:
-                    asignador_personas = Personas(x[0],x[1][0], x[1][1], x[1][2], x[1][3], x[1][4], x[1][5], x[1][6],
-                                                  x[1][7], x[1][8], x[1][9], x[1][10],x[1][11])
+                    asignador_personas = Personas(x[0], x[1][0], x[1][1], x[1][2], x[1][3], x[1][4], x[1][5], x[1][6],
+                                                  x[1][7], x[1][8], x[1][9], x[1][10], x[1][11])
                     lista_personas.append(asignador_personas.devolver_datos())
                 print(lista_personas)
                 self.archi.close()
@@ -163,8 +165,8 @@ class Menu_principal():
                 lista = self.archi.read()
                 lista = eval(lista)
                 for x in lista:
-                    asignador_personas = Personas(x[0],x[1][0], x[1][1], x[1][2], x[1][3], x[1][4], x[1][5], x[1][6],
-                                                  x[1][7], x[1][8], x[1][9], x[1][10],x[1][11])
+                    asignador_personas = Personas(x[0], x[1][0], x[1][1], x[1][2], x[1][3], x[1][4], x[1][5], x[1][6],
+                                                  x[1][7], x[1][8], x[1][9], x[1][10], x[1][11])
                     lista_personas.append(asignador_personas.devolver_datos())
                 print(lista_personas)
                 self.archi.close()
@@ -277,7 +279,7 @@ class Personas():
 
     def devolver_datos(self):
         return [self.nombre, [self.felicidad, self.tristeza, self.enojo, self.sorpresa, self.exposicion, self.borroso, \
-               self.gorra, self.surOeste, self.norEste, self.surEste, self.surOeste, self.direccion]]
+                              self.gorra, self.surOeste, self.norEste, self.surEste, self.surOeste, self.direccion]]
 
 
 class Rostros():

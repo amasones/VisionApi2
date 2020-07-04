@@ -40,7 +40,7 @@ class Ventana_Visualizacion_Por_Persona:
                 self.lista_con_misma_direccion.append(list(x))
             else:
                 pass
-
+        # Pone todos los nombre asociados en la imagen
         self.nombres = []
         for x in self.lista_con_misma_direccion:
             if x[0] in self.nombres:
@@ -48,14 +48,23 @@ class Ventana_Visualizacion_Por_Persona:
             else:
                 self.nombres.append(x[0])
 
+        # Pone todos los nombres existentes en una lista
+        self.todos_nombres = []
+        for x in self.lista_R:
+            if x[0] in self.todos_nombres:
+                pass
+            else:
+                self.todos_nombres.append(x[0])
+
         # Combobox para eligir personas con un bind para que ejecute mostrar_datos
-        self.opciones_personas = ttk.Combobox(self.root, value=self.nombres, state="readonly")
+        self.opciones_personas = ttk.Combobox(self.root, value=self.todos_nombres, state="readonly")
         self.opciones_personas.current(0)
         self.opciones_personas.bind("<<ComboboxSelected>>",self.marcar_rostro)
         self.opciones_personas.pack(side=RIGHT, padx=20)
 
 
     def cargar_imagen(self):
+        self.todos_nombres.clear()
         self.root.destroy()
         ventana_visualizacion_por_persona(self.lista_R)
 

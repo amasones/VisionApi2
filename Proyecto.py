@@ -1,20 +1,15 @@
-# github https://github.com/amasones/ProyectoVision
+# github https://github.com/amasones/VisionApi2
 import tkinter as tk
-from tkinter import messagebox
-import sys
-from tkinter import ttk
 from tkinter import filedialog
-from PIL import ImageTk
-from PIL import Image
-import os, io
-from google.cloud import vision
-from google.cloud.vision import types
-from Funciones.reconocimiento_rostros import ventana_reconocer
+from tkinter import messagebox
+
 from Funciones.etiquetado_personas import ventana_etiquetar
+from Funciones.reconocimiento_rostros import ventana_reconocer
 from Funciones.visualizacion_etiquetas import ventana_visualizacion
 from Funciones.visualizacion_por_persona import ventana_visualizacion_por_persona
 
 
+# Menu principal en donde se muestran unos cuantos labels y unos botones que ejecutan funciones
 class Menu_principal():
     def __init__(self, raiz):
         # Interfaz grafica
@@ -200,66 +195,85 @@ class Menu_principal():
     def accion_reconocimiento(self):
         ventana_reconocer()
 
-    def accion_recargar_reconocimiento(self):
-        # lee los datos de la lista y los asigna en la clase reconocimiento y rostros respectivamnete
-        archi = open("datos/temporal.dat", "r")
-        lista = archi.read()
-        lista = eval(lista)
-        diccionario_rostro = str(lista[2])
-        diccionario_rostro.replace("\\", "")
-        diccionario_rostro = eval(diccionario_rostro)
-        asignador_reco = Reconocimiento(lista[0], lista[1], lista[2])
-        for x in diccionario_rostro:
-            y = eval(x)
-            asignador_rostro = Rostros("Vacio", y.get("face_expressions").get("joy_likelihood"),
-                                       y.get("face_expressions").get("sorrow_likelihood"),
-                                       y.get("face_expressions").get("anger_likelihood"),
-                                       y.get("face_expressions").get("surprise_likelihood"),
-                                       y.get("face_expressions").get("under_exposed_likelihood"),
-                                       y.get("face_expressions").get("blurred_likelihood"),
-                                       y.get("face_expressions").get("headwear_likelihood"), y.get("vertices")[0],
-                                       y.get("vertices")[1],
-                                       y.get("vertices")[2], y.get("vertices")[3], lista[1])
-            lista_rostros.append(list(asignador_rostro.devolver_datos()))
-        lista_reconocimiento.append(asignador_reco.devolver_datos())
-        print(lista_reconocimiento)
-        print(lista_rostros)
-        archi.close()
+    # No encontré una forma eficiente en la que al terminar una funcion en  reconocimiento_rostro y etiquetado_persona
+    # se pudieran cargar a memoria automaticamente, entonces mi idea es indicarle al usuario cuando presionar los botones
+    # para cargar un archivo guardado cuando se termine reconocimiento_rostro/etiquetado_persona y cargarlo una sola vez
+    # y cuando el usuario vaya a necesitar esos datos
 
-        # lee los datos de la lista y los asigna en la clase personas y rostros respectivamnete
+    def accion_recargar_reconocimiento(self):
+        try:
+            # lee los datos de la lista y los asigna en la clase reconocimiento y rostros respectivamnete
+            archi = open("datos/temporal.dat", "r")
+            lista = archi.read()
+            lista = eval(lista)
+            diccionario_rostro = str(lista[2])
+            diccionario_rostro.replace("\\", "")
+            diccionario_rostro = eval(diccionario_rostro)
+            asignador_reco = Reconocimiento(lista[0], lista[1], lista[2])
+            for x in diccionario_rostro:
+                y = eval(x)
+                asignador_rostro = Rostros("Vacio", y.get("face_expressions").get("joy_likelihood"),
+                                           y.get("face_expressions").get("sorrow_likelihood"),
+                                           y.get("face_expressions").get("anger_likelihood"),
+                                           y.get("face_expressions").get("surprise_likelihood"),
+                                           y.get("face_expressions").get("under_exposed_likelihood"),
+                                           y.get("face_expressions").get("blurred_likelihood"),
+                                           y.get("face_expressions").get("headwear_likelihood"), y.get("vertices")[0],
+                                           y.get("vertices")[1],
+                                           y.get("vertices")[2], y.get("vertices")[3], lista[1])
+                lista_rostros.append(list(asignador_rostro.devolver_datos()))
+            lista_reconocimiento.append(asignador_reco.devolver_datos())
+            print(lista_reconocimiento)
+            print(lista_rostros)
+            archi.close()
+        except FileNotFoundError:
+            self.mostrar_error_cargar()
+
+            # lee los datos de la lista y los asigna en la clase personas y rostros respectivamnete
 
     def accion_recargar_etiquetado(self):
-        archi = open("datos/temporal2.dat", "r")
-        lista = archi.read()
-        lista = eval(lista)
-        print(lista_rostros)
-        # evalua que la primeras cordenadas y la direccion sean iguales para poder hacer cambios al nombre si se
-        # encuentra alguno
-        for x in lista:
-            for y in lista_rostros:
-                if x[8] == y[8] and x[12] == y[12]:
-                    y[0] = x[0]
-                    print([y][0])
-                else:
-                    pass
-        # Limpia lista_rostros para volver a asignar los valores a la clase rostros y personas
-        copia = lista_rostros[:]
-        lista_rostros.clear()
-        print("copia")
-        print(copia)
-        for x in copia:
-            asignador_rostro = Rostros(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12])
-            asignador_personas = Personas(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11],
-                                          x[12])
+        try:
+            archi = open("datos/temporal2.dat", "r")
+            lista = archi.read()
+            lista = eval(lista)
+            print(lista_rostros)
+            # evalua que la primeras cordenadas y la direccion sean iguales para poder hacer cambios al nombre si se
+            # encuentra alguno
+            for x in lista:
+                for y in lista_rostros:
+                    if x[8] == y[8] and x[12] == y[12]:
+                        y[0] = x[0]
+                        print([y][0])
+                    else:
+                        pass
+            # Limpia lista_rostros para volver a asignar los valores a la clase rostros y personas
+            copia = lista_rostros[:]
+            lista_rostros.clear()
+            print("copia")
+            print(copia)
+            for x in copia:
+                asignador_rostro = Rostros(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11],
+                                           x[12])
+                asignador_personas = Personas(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11],
+                                              x[12])
 
-            lista_rostros.append(asignador_rostro.devolver_datos())
-            lista_personas.append(asignador_personas.devolver_datos())
-        print("lista_rostros")
-        print(lista_rostros)
-        print("lista_personas")
-        print(lista_personas)
+                lista_rostros.append(asignador_rostro.devolver_datos())
+                lista_personas.append(asignador_personas.devolver_datos())
+            print("lista_rostros")
+            print(lista_rostros)
+            print("lista_personas")
+            print(lista_personas)
 
-        archi.close()
+            archi.close()
+        except FileNotFoundError:
+            self.mostrar_error_cargar()
+
+    def mostrar_error_cargar(self):
+        self.advertencia = tk.Toplevel()
+        self.advertencia.withdraw()
+        self.advertencia.mensaje_advertencia = messagebox.showerror(
+            message="No hay datos para cargar",
+            title="Error")
 
 
 class Personas():
@@ -300,10 +314,9 @@ class Rostros():
         self.surEste = SE
         self.surOeste = SO
         self.direccion = direccion
-
     def devolver_datos(self):
-        return self.nombre, self.felicidad, self.tristeza, self.enojo, self.sorpresa, self.exposicion, self.borroso, \
-               self.gorra, self.surOeste, self.norEste, self.surEste, self.surOeste, self.direccion
+        return [self.nombre, self.felicidad, self.tristeza, self.enojo, self.sorpresa, self.exposicion, self.borroso, \
+               self.gorra, self.surOeste, self.norEste, self.surEste, self.surOeste, self.direccion]
 
 
 class Reconocimiento():
